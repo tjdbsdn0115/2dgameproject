@@ -1,4 +1,7 @@
 {
+  "npc_guide": {
+    "file": "sprites/npc_guide.png"
+  },
   "floor": {
     "file": "sprites/floor.png",
     "atlas_row": 0,

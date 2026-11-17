@@ -94,6 +94,7 @@ class View:
         self.title_background = p.load_image(str(ROOT / 'assets/title_background.png'))
         self.wordmark = p.load_image(str(ROOT / 'assets/mbti_dungeon_wordmark.png'))
         self.ability_tablet = p.load_image(str(ROOT / 'assets/ability_tablet.png'))
+        self.npc_guide = p.load_image(str(ROOT / 'assets/sprites/npc_guide.png'))
         self.cell = self.atlas.w // 4
         self.selected = [None] * 4
         self.selection_elapsed = 0.0
@@ -363,7 +364,9 @@ class View:
             if g.active('S') or (g.active('I') and math.hypot(tx*tile-g.x, ty*tile-g.y) < 160):
                 self.text('!', x-5, y-42, 30, (255, 205, 120))
         nx, ny = g.position('npc')
-        self.sprite(1, 0, ox+nx-23, oy+ny-38, 46, 60)
+        npc_scale = min(48/self.npc_guide.w, 64/self.npc_guide.h)
+        self.npc_guide.draw(ox+nx, 800-(oy+ny-8),
+                            self.npc_guide.w*npc_scale, self.npc_guide.h*npc_scale)
         self.text('안내자', ox+nx-26, oy+ny-69, 16)
         self.rect(ox+nx-24, oy+ny+26, 48, 5, (49, 46, 70))
         self.rect(ox+nx-24, oy+ny+26, 48*g.npc_hp/100, 5, (94, 225, 168))
