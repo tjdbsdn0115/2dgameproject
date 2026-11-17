@@ -11,3 +11,6 @@ Thumbs.db
 
 # Office temporary lock files
 ~$*
+
+# Private build dependencies and verification intermediates
+.build/
