@@ -95,6 +95,8 @@ class View:
         self.wordmark = p.load_image(str(ROOT / 'assets/mbti_dungeon_wordmark.png'))
         self.ability_tablet = p.load_image(str(ROOT / 'assets/ability_tablet.png'))
         self.npc_guide = p.load_image(str(ROOT / 'assets/sprites/npc_guide.png'))
+        self.terrain_atlas = p.load_image(str(ROOT / 'assets/dungeon_terrain.png'))
+        self.terrain_cell = self.terrain_atlas.w // 2
         self.cell = self.atlas.w // 4
         self.selected = [None] * 4
         self.selection_elapsed = 0.0
@@ -354,9 +356,7 @@ class View:
         self.text('MBTI DUNGEON', 40, 24, 30, font='display')
         self.text(MAP['name'], 40, 73, 18, (94, 225, 218))
         ox, oy, tile = 40, 128, g.tile
-        for row, line in enumerate(MAP['rows']):
-            for col, cell in enumerate(line):
-                self.sprite(0, 1 if cell == '#' else 0, ox+col*tile, oy+row*tile, tile, tile)
+        self.draw_dungeon_terrain(ox, oy, tile)
         for tx, ty in MAP['traps']:
             x, y = ox+tx*tile, oy+ty*tile
             color = (92, 222, 229) if g.active('J') else ((238, 116, 128) if g.trap_on else (88, 73, 103))
@@ -394,6 +394,42 @@ class View:
             self.rect(280, 300, 620, 160, (18, 30, 48))
             self.text('연습 맵 탐색 완료', 350, 325, 42, (94, 225, 218))
             self.text(f'{g.mbti}   {g.elapsed:.1f}초   R로 재선택', 370, 403, 24)
+
+    def terrain_tile(self, index, x, y, width, height):
+        cell = self.terrain_cell
+        row, col = divmod(index, 2)
+        self.terrain_atlas.clip_draw(col*cell+4, self.terrain_atlas.h-(row+1)*cell+4,
+                                     cell-8, cell-8, x+width/2, 800-y-height/2, width, height)
+
+    def draw_dungeon_terrain(self, ox, oy, tile):
+        rows = MAP['rows']
+        for row, line in enumerate(rows):
+            for col, cell in enumerate(line):
+                if cell != '#':
+                    x, y = ox+col*tile, oy+row*tile
+                    variant = int((row*7+col*11) % 5 == 0)
+                    self.terrain_tile(variant, x, y, tile, tile)
+                    if row > 0 and rows[row-1][col] == '#':
+                        self.rect(x, y, tile, 8, (2, 5, 12), 130)
+                        self.rect(x, y+8, tile, 4, (2, 5, 12), 55)
+                    if col > 0 and line[col-1] == '#':
+                        self.rect(x, y, 5, tile, (2, 5, 12), 90)
+        for row, line in enumerate(rows):
+            for col, cell in enumerate(line):
+                if cell == '#':
+                    x, y = ox+col*tile, oy+row*tile
+                    self.terrain_tile(2, x, y, tile, tile)
+                    # Exposed lower edges show the wall's vertical stone face.
+                    if row+1 < len(rows) and rows[row+1][col] != '#':
+                        self.terrain_tile(3, x, y+18, tile, tile-18)
+                        self.rect(x, y+18, tile, 1, (167, 181, 194), 170)
+                        self.rect(x, y+tile-2, tile, 2, (12, 18, 29))
+                    if row > 0 and rows[row-1][col] != '#':
+                        self.rect(x, y, tile, 2, (173, 188, 199), 145)
+                    if col > 0 and line[col-1] != '#':
+                        self.rect(x, y, 2, tile, (13, 20, 33), 180)
+                    if col+1 < len(line) and line[col+1] != '#':
+                        self.rect(x+tile-2, y, 2, tile, (13, 20, 33), 180)
 
     def draw_hud(self):
         g = self.game

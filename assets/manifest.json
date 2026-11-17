@@ -1,4 +1,9 @@
 {
+  "dungeon_terrain": {
+    "file": "dungeon_terrain.png",
+    "columns": 2,
+    "rows": 2
+  },
   "npc_guide": {
     "file": "sprites/npc_guide.png"
   },
