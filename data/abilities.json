@@ -1,10 +1,10 @@
 {
-  "E": {"name": "소통", "description": "가까운 안내자의 추가 단서 확인", "cooldown": 5, "duration": 4, "range": 140},
-  "I": {"name": "집중", "description": "주변 160px의 위험 위치 감지", "cooldown": 6, "duration": 4, "range": 160},
-  "S": {"name": "관찰", "description": "맵의 함정과 열쇠 위치 표시", "cooldown": 8, "duration": 5, "range": 1200},
-  "N": {"name": "직관", "description": "열쇠 또는 출구 방향 안내", "cooldown": 5, "duration": 5, "range": 1200},
-  "T": {"name": "논리", "description": "가까운 석판의 퍼즐 단서 확인", "cooldown": 5, "duration": 4, "range": 140},
-  "F": {"name": "공감", "description": "가까운 안내자의 체력 25 회복", "cooldown": 8, "duration": 2, "range": 140, "heal": 25},
-  "J": {"name": "계획", "description": "연습용 함정을 3초간 정지", "cooldown": 9, "duration": 3, "range": 1200},
-  "P": {"name": "적응", "description": "3초간 이동 속도 1.6배", "cooldown": 7, "duration": 3, "range": 0, "speed_multiplier": 1.6}
+  "E": {"name": "소통", "description": "가까운 안내자의 추가 단서 확인", "details": "안내자에게 기본 대화에 없는 추가 단서를 얻습니다. 열쇠가 있는 위치를 알아내 탐색에 활용할 수 있습니다.", "condition": "안내자 가까이에서 사용", "cooldown": 5, "duration": 4, "range": 140},
+  "I": {"name": "집중", "description": "주변 160px의 위험 위치 감지", "details": "가까운 함정 위에 경고 표시를 띄웁니다. 이동하면서 주변의 위험한 위치를 확인할 수 있습니다.", "condition": "캐릭터 주변의 함정 감지", "cooldown": 6, "duration": 4, "range": 160},
+  "S": {"name": "관찰", "description": "맵의 함정과 열쇠 위치 표시", "details": "맵의 함정을 경고 표시로 강조하고, 남아 있는 열쇠에 이름을 표시합니다. 위험과 목표의 위치를 한눈에 확인합니다.", "condition": "연습 맵 전체에서 사용", "cooldown": 8, "duration": 5, "range": 1200},
+  "N": {"name": "직관", "description": "열쇠 또는 출구 방향 안내", "details": "캐릭터 옆에 현재 목표를 향하는 선과 표시가 나타납니다. 열쇠를 얻기 전에는 열쇠, 얻은 뒤에는 출구를 안내합니다.", "condition": "어디에서나 사용", "cooldown": 5, "duration": 5, "range": 1200},
+  "T": {"name": "논리", "description": "가까운 석판의 퍼즐 단서 확인", "details": "석판에 기록된 순서의 단서를 확인합니다. 연습 맵에서는 달, 별, 태양 순서를 안내합니다.", "condition": "석판 가까이에서 사용", "cooldown": 5, "duration": 4, "range": 140},
+  "F": {"name": "공감", "description": "가까운 안내자의 체력 25 회복", "details": "다친 안내자의 체력을 회복시킵니다. 안내자의 체력이 가득 차 있으면 발동하지 않으며, 재사용 대기시간도 소모하지 않습니다.", "condition": "체력이 부족한 안내자 가까이에서 사용", "cooldown": 8, "duration": 2, "range": 140, "heal": 25},
+  "J": {"name": "계획", "description": "연습용 함정을 3초간 정지", "details": "연습 맵의 함정을 잠시 정지시키고 청록색으로 표시합니다. 효과가 끝나면 함정이 원래 주기에 따라 다시 작동합니다.", "condition": "연습 맵 전체의 함정에 적용", "cooldown": 9, "duration": 3, "range": 1200},
+  "P": {"name": "적응", "description": "3초간 이동 속도 1.6배", "details": "잠시 이동 속도가 빨라져 통로를 빠르게 이동할 수 있습니다. 효과가 끝나면 기본 이동 속도로 돌아옵니다.", "condition": "어디에서나 사용", "cooldown": 7, "duration": 3, "range": 0, "speed_multiplier": 1.6}
 }

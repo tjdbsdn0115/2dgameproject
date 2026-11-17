@@ -45,9 +45,8 @@ def main():
                     running = view.handle_key(event.key)
                     if view.mode != previous_mode:
                         pressed.clear()
-                elif event.type == p.SDL_MOUSEMOTION and view.mode == 'title':
-                    if not view.title.help_open:
-                        view.title.hover(event.x, event.y)
+                elif event.type == p.SDL_MOUSEMOTION:
+                    view.hover(event.x, event.y)
                 elif event.type == p.SDL_MOUSEBUTTONDOWN and event.button == p.SDL_BUTTON_LEFT:
                     previous_mode = view.mode
                     running = view.click(event.x, event.y)
@@ -59,6 +58,8 @@ def main():
                 break
             if not p.SDL_GetWindowFlags(p.window) & p.SDL_WINDOW_INPUT_FOCUS:
                 pressed.clear()
+            if not p.SDL_GetMouseFocus():
+                view.hovered_ability = None
             dx = int(p.SDLK_d in pressed or p.SDLK_RIGHT in pressed) - int(p.SDLK_a in pressed or p.SDLK_LEFT in pressed)
             dy = int(p.SDLK_s in pressed or p.SDLK_DOWN in pressed) - int(p.SDLK_w in pressed or p.SDLK_UP in pressed)
             view.update(dt, dx, dy)
@@ -96,6 +97,7 @@ class View:
         self.cell = self.atlas.w // 4
         self.selected = [None] * 4
         self.selection_elapsed = 0.0
+        self.hovered_ability = None
         self.game = None
         self.mode = 'logo'
         self.logo = LogoMode()
@@ -134,6 +136,7 @@ class View:
 
     def change_mode(self, mode):
         self.mode = mode
+        self.hovered_ability = None
         if mode == 'title':
             self.title = TitleMode()
         elif mode == 'selection':
@@ -177,6 +180,7 @@ class View:
 
     def toggle_fullscreen(self):
         p = self.p
+        self.hovered_ability = None
         fullscreen = p.SDL_GetWindowFlags(p.window) & p.SDL_WINDOW_FULLSCREEN
         target = 0 if fullscreen else p.SDL_WINDOW_FULLSCREEN_DESKTOP
         if p.SDL_SetWindowFullscreen(p.window, target) != 0:
@@ -206,14 +210,25 @@ class View:
             return self.title.click(self, x, y)
         if self.mode != 'selection':
             return True
-        for index, pair in enumerate(PAIRS):
-            for option, letter in enumerate(pair):
-                left, top = 64 + index*292, 258 + option*150
-                if left <= x <= left+272 and top <= y <= top+130:
-                    self.selected[index] = letter
+        self.hover(x, y)
+        if self.hovered_ability:
+            index, letter, _, _ = self.hovered_ability
+            self.selected[index] = letter
         if 938 <= x <= 1210 and 655 <= y <= 724:
             self.start()
         return True
+
+    def hover(self, x, y):
+        self.hovered_ability = None
+        if self.mode == 'title' and not self.title.help_open:
+            self.title.hover(x, y)
+        elif self.mode == 'selection':
+            for index, pair in enumerate(PAIRS):
+                for option, letter in enumerate(pair):
+                    left, top = 64+index*292, 258+option*150
+                    if left <= x <= left+272 and top <= y <= top+130:
+                        self.hovered_ability = (index, letter, left, top)
+                        return
 
     def draw(self):
         # Clear the complete output, including letterbox bars outside the game.
@@ -237,7 +252,7 @@ class View:
         self.text('능력 선택', 566, 65, 42, (222, 202, 153), font='engraved')
         count = sum(letter is not None for letter in self.selected)
         self.text(f'선택한 지표  {count} / 4', 570, 135, 18, (123, 213, 206))
-        self.text('각 지표에서 하나씩 선택하세요. 선택한 네 능력을 장착합니다.', 68, 192, 21)
+        self.text('마우스를 올려 능력을 확인하고, 각 지표에서 하나씩 선택하세요.', 68, 192, 21)
         labels = ('에너지 방향', '정보 수집', '판단 방식', '생활 방식')
         for index, pair in enumerate(PAIRS):
             x = 64+index*292
@@ -257,6 +272,61 @@ class View:
         self.text('던전 입장  Enter', 967, 673, 24,
                   (239, 218, 172) if all(self.selected) else (130, 131, 138), font='engraved')
         self.text('마우스 선택    Enter 입장    Esc 타이틀로    F11 전체화면', 68, 697, 18, (158, 170, 197))
+        if self.hovered_ability:
+            self.draw_ability_tooltip()
+
+    def wrap_text(self, text, max_width, size=18):
+        lines, line = [], ''
+        width, height = ctypes.c_int(), ctypes.c_int()
+        for character in text:
+            candidate = line+character
+            self.p.TTF_SizeUTF8(self.fonts['body'][size].font, candidate.encode('utf-8'),
+                                ctypes.byref(width), ctypes.byref(height))
+            if width.value > max_width and line:
+                lines.append(line.rstrip())
+                line = character.lstrip()
+            else:
+                line = candidate
+        if line:
+            lines.append(line.rstrip())
+        return lines
+
+    def draw_ability_tooltip(self):
+        index, letter, left, top = self.hovered_ability
+        ability = ABILITIES[letter]
+        lines = self.wrap_text(ability['details'], 372)
+        condition = ability['condition']
+        if letter in 'EFT':
+            condition += f" · {ability['range']}px 이내"
+        elif letter == 'I':
+            condition += f" · 반경 {ability['range']}px"
+        conditions = self.wrap_text(condition, 372)
+        height = 160+(len(lines)+len(conditions))*25
+        x, y = min(left+16, 844), min(top+138, 784-height)
+        self.rect(x+5, y+6, 420, height, (0, 0, 0), 160)
+        self.rect(x, y, 420, height, (8, 12, 24))
+        self.stone_panel(x, y, 420, height, True)
+        self.text(f"{letter}  {ability['name']}", x+24, y+15, 24,
+                  (245, 217, 159), font='engraved')
+        cursor_y = y+62
+        for line in lines:
+            self.text(line, x+24, cursor_y, 18, (229, 226, 218))
+            cursor_y += 25
+        self.rect(x+24, cursor_y+8, 372, 1, (100, 88, 64))
+        cursor_y += 22
+        for line in conditions:
+            self.text(line, x+24, cursor_y, 18, (127, 212, 203))
+            cursor_y += 25
+        effect = f"효과 {ability['duration']}초"
+        if letter in 'ET':
+            effect = '즉시 힌트 제공'
+        elif letter == 'F':
+            effect = f"체력 {ability['heal']} 회복"
+        elif letter == 'P':
+            effect += f" · 속도 {ability['speed_multiplier']}배"
+        self.text(effect, x+24, cursor_y+8, 18, (222, 205, 164))
+        self.text(f"재사용 {ability['cooldown']}초 · 입장 후 {index+1}번 키", x+24,
+                  cursor_y+35, 18, (188, 189, 199))
 
     def draw_ability_tablet(self, letter, x, y, active):
         self.ability_tablet.opacify(1.0 if active else 0.80)
@@ -364,6 +434,7 @@ class View:
         for index, letter in enumerate('INTJ'):
             option = PAIRS[index].index(letter)
             self.click(80+index*292, 280+option*150)
+        self.hovered_ability = None
         self.draw()
         self.screenshot(out / '01_mbti_selection.png')
         self.start()
