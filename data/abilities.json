@@ -1,0 +1,10 @@
+{
+  "E": {"name": "소통", "description": "가까운 안내자의 추가 단서 확인", "cooldown": 5, "duration": 4, "range": 140},
+  "I": {"name": "집중", "description": "주변 160px의 위험 위치 감지", "cooldown": 6, "duration": 4, "range": 160},
+  "S": {"name": "관찰", "description": "맵의 함정과 열쇠 위치 표시", "cooldown": 8, "duration": 5, "range": 1200},
+  "N": {"name": "직관", "description": "열쇠 또는 출구 방향 안내", "cooldown": 5, "duration": 5, "range": 1200},
+  "T": {"name": "논리", "description": "가까운 석판의 퍼즐 단서 확인", "cooldown": 5, "duration": 4, "range": 140},
+  "F": {"name": "공감", "description": "가까운 안내자의 체력 25 회복", "cooldown": 8, "duration": 2, "range": 140, "heal": 25},
+  "J": {"name": "계획", "description": "연습용 함정을 3초간 정지", "cooldown": 9, "duration": 3, "range": 1200},
+  "P": {"name": "적응", "description": "3초간 이동 속도 1.6배", "cooldown": 7, "duration": 3, "range": 0, "speed_multiplier": 1.6}
+}
