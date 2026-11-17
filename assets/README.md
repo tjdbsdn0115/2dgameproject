@@ -4,7 +4,23 @@
 
 `dungeon_atlas.png`는 4×4 셀 아틀라스입니다. 첫 행은 바닥, 벽, 열쇠, 출구입니다. 나머지 행은 아래·위·오른쪽 방향의 대기, 걷기 2프레임, 충돌 프레임입니다. 왼쪽 방향은 게임에서 오른쪽 스프라이트를 반전해 표시합니다.
 
-`sprites/`에는 재사용할 수 있도록 분리한 개별 PNG가 있습니다. 걷기는 초당 8프레임, 벽 충돌은 0.18초 동안 반응합니다. 안내자 NPC는 동일한 캐릭터 아트를 재사용하며 체력 표시와 이름으로 구분합니다.
+`sprites/`에는 재사용할 수 있도록 분리한 개별 PNG가 있습니다. 걷기는 초당 8프레임, 벽 충돌은 0.18초 동안 반응합니다. 안내자 NPC는 전용 이미지 `sprites/npc_guide.png`를 사용합니다.
+
+## 던전 지형
+
+`dungeon_terrain.png`는 내장 ImageGen 도구로 생성한 2×2 지형 아틀라스입니다. 첫 행은 어두운 청회색 판석 바닥 2종, 둘째 행은 밝은 회청색 벽 윗면과 수직 옆면입니다. 현재 게임은 이 아틀라스로 지형을 표시합니다. 통로 쪽 벽에는 수직면과 가장자리를 표시하고, 벽 아래의 바닥에는 그림자를 더합니다. 두 바닥 이미지는 맵 좌표에 따라 일정하게 섞어 표시합니다.
+
+최종 생성 프롬프트는 다음과 같습니다.
+
+> Use case stylized-concept. Production game TILE TEXTURE ATLAS, EXACT square canvas divided into a perfectly aligned 2 columns x 2 rows of four equal square texture cells, NO gutters, NO margins, NO labels, NO text, NO grid lines. Full opaque pixel-art tile textures edge to edge. For a top-down 2D ancient mystery dungeon. Top left cell: walkable FLOOR A, DARK desaturated blue-charcoal gray stone slabs seen straight down, broad flat worn flagstones with faint hairline cracks, subtle grout, quiet low contrast, NO plants, NO crystals, NO items. Top right cell: FLOOR B, identical palette and scale but slightly different cracks and stone joints, no major decoration. Bottom left cell: WALL TOP SURFACE, LIGHT desaturated cool gray-blue massive chiseled rectangular stone blocks seen straight down, visibly thicker and MUCH lighter than both floor cells, strong beveled stone rims, worn sculpted edges, restrained dusty lavender highlights, no moss. Bottom right cell: WALL FRONT FACE, vertical front elevation of substantial gray-blue masonry with horizontal block courses, dark deep mortar gaps, substantial carved stone, bright upper edge and darker lower edge, MUCH lighter than floor, matches bottom left stone material. Orthographic textures, NOT a perspective scene, no isometric angles. Cohesive premium crisp retro RPG pixel art, large readable pixel clusters. CRITICAL contrast: floor near-black charcoal/navy values, wall top medium-light cool stone gray values, wall front medium cool gray with deep dark grout. Avoid saturated purple that would blend the floor with walls. All four cells must tile naturally when repeated. Exact four equal quadrants. No outside frame.
+
+## 안내자 NPC
+
+`sprites/npc_guide.png`는 내장 ImageGen 도구로 생성한 투명 PNG입니다. 은발, 안경, 보라색 학자 로브와 크림색 어깨 망토를 입고 책과 랜턴을 든 던전 기록관으로 디자인했습니다. 게임에서는 원본 비율을 유지해 48×64 영역 안에 표시합니다.
+
+최종 생성 프롬프트는 다음과 같습니다.
+
+> Create a single production-ready NPC sprite for the top-down 2D pixel-art game MBTI DUNGEON. Full-body front-facing friendly mysterious elderly dungeon archivist, silver-white hair, short silver beard, tiny round gold spectacles, plum-purple long scholar robe with antique gold trim and a cream shoulder mantle, leather belt, brown boots. He carries one small closed leather spellbook with a golden clasp against his chest; a tiny brass lantern glows warm amber at his side. Distinctive unhooded head with white hair, compact readable silhouette, head about one third body height. Cute polished RPG pixel art, crisp pixel clusters and dark outline, limited purple/cream/gold palette to suit a purple stone dungeon and cyan portals. Slight overhead top-down RPG camera showing top of head and shoulders, eyes looking toward player below. ONE character only, neutral standing idle pose, fully visible head to feet. Character occupies 85 to 90 percent image height with small even transparent margins. Portrait 3:4 composition. Intended to be reduced to roughly 48x64 pixels, keep book, hair and robe simple and highly readable. Actual transparent alpha-zero background, NO background scene, NO floor, NO cast ground shadow, NO grid, NO text, NO labels, NO frame, NO extra characters, NO staff. PNG game asset.
 
 ## 생성 프롬프트
 
