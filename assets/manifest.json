@@ -1,0 +1,82 @@
+{
+  "floor": {
+    "file": "sprites/floor.png",
+    "atlas_row": 0,
+    "atlas_column": 0
+  },
+  "wall": {
+    "file": "sprites/wall.png",
+    "atlas_row": 0,
+    "atlas_column": 1
+  },
+  "key": {
+    "file": "sprites/key.png",
+    "atlas_row": 0,
+    "atlas_column": 2
+  },
+  "exit": {
+    "file": "sprites/exit.png",
+    "atlas_row": 0,
+    "atlas_column": 3
+  },
+  "player_down_idle": {
+    "file": "sprites/player_down_idle.png",
+    "atlas_row": 1,
+    "atlas_column": 0
+  },
+  "player_down_walk1": {
+    "file": "sprites/player_down_walk1.png",
+    "atlas_row": 1,
+    "atlas_column": 1
+  },
+  "player_down_walk2": {
+    "file": "sprites/player_down_walk2.png",
+    "atlas_row": 1,
+    "atlas_column": 2
+  },
+  "player_down_bump": {
+    "file": "sprites/player_down_bump.png",
+    "atlas_row": 1,
+    "atlas_column": 3
+  },
+  "player_up_idle": {
+    "file": "sprites/player_up_idle.png",
+    "atlas_row": 2,
+    "atlas_column": 0
+  },
+  "player_up_walk1": {
+    "file": "sprites/player_up_walk1.png",
+    "atlas_row": 2,
+    "atlas_column": 1
+  },
+  "player_up_walk2": {
+    "file": "sprites/player_up_walk2.png",
+    "atlas_row": 2,
+    "atlas_column": 2
+  },
+  "player_up_bump": {
+    "file": "sprites/player_up_bump.png",
+    "atlas_row": 2,
+    "atlas_column": 3
+  },
+  "player_right_idle": {
+    "file": "sprites/player_right_idle.png",
+    "atlas_row": 3,
+    "atlas_column": 0
+  },
+  "player_right_walk1": {
+    "file": "sprites/player_right_walk1.png",
+    "atlas_row": 3,
+    "atlas_column": 1
+  },
+  "player_right_walk2": {
+    "file": "sprites/player_right_walk2.png",
+    "atlas_row": 3,
+    "atlas_column": 2
+  },
+  "player_right_bump": {
+    "file": "sprites/player_right_bump.png",
+    "atlas_row": 3,
+    "atlas_column": 3
+  }
+}
